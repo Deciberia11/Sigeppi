@@ -1,0 +1,124 @@
+<%@ page contentType="text/html;charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ taglib prefix="c" uri="jakarta.tags.core" %>
+<%@ taglib prefix="fmt" uri="jakarta.tags.fmt" %>
+<%@ taglib prefix="fn" uri="jakarta.tags.functions" %>
+<fmt:setLocale value="en_US" scope="request" />
+<c:set var="ctx" value="${pageContext.request.contextPath}" />
+<c:set var="u" value="${sessionScope.usuario}" />
+<c:set var="rol" value="${u.rol.nombre}" />
+<c:set var="qs" value="${requestScope['jakarta.servlet.forward.query_string']}" />
+<c:set var="actual" value="${requestScope['jakarta.servlet.forward.servlet_path']}${not empty qs ? '?' : ''}${qs}" />
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>SIGEPPI · Delicias del Valle</title>
+    <link rel="stylesheet" href="${ctx}/recursos/css/estilos.css">
+</head>
+<body>
+<div class="app">
+    <aside class="menu-lateral" id="menuLateral">
+        <div class="marca"><b>SIGEPPI</b><span>Panadería y Pastelería Delicias del Valle</span></div>
+        <nav>
+            <a href="${ctx}/inicio" class="${actual == '/inicio' ? 'activo' : ''}">
+                <svg viewBox="0 0 24 24"><path d="M3 10.5 12 3l9 7.5V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/></svg>Inicio</a>
+
+            <c:if test="${rol == 'VENDEDOR'}">
+                <div class="grupo">Tienda</div>
+                <a href="${ctx}/pedido" class="${fn:startsWith(actual, '/pedido') ? 'activo' : ''}">
+                    <svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>Registrar pedido</a>
+                <a href="${ctx}/estadoPedido" class="${fn:startsWith(actual, '/estadoPedido') ? 'activo' : ''}">
+                    <svg viewBox="0 0 24 24"><path d="M9 5h11M9 12h11M9 19h11M4 5h.01M4 12h.01M4 19h.01"/></svg>Pedidos de mi tienda</a>
+                <a href="${ctx}/catalogo" class="${fn:startsWith(actual, '/catalogo') ? 'activo' : ''}">
+                    <svg viewBox="0 0 24 24"><path d="M4 4h7v7H4zM13 4h7v7h-7zM4 13h7v7H4zM13 13h7v7h-7z"/></svg>Catálogo de productos</a>
+            </c:if>
+
+            <c:if test="${rol == 'JEFE_PRODUCCION'}">
+                <div class="grupo">Producción</div>
+                <a href="${ctx}/orden" class="${fn:startsWith(actual, '/orden') and not fn:contains(actual, 'ordenes') ? 'activo' : ''}">
+                    <svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>Planificar orden</a>
+                <a href="${ctx}/orden?accion=ordenes" class="${fn:contains(actual, 'accion=ordenes') ? 'activo' : ''}">
+                    <svg viewBox="0 0 24 24"><path d="M9 11l3 3 8-8M20 12v7a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h9"/></svg>Órdenes de producción</a>
+                <a href="${ctx}/estadoPedido?estado=EN_PRODUCCION" class="${fn:startsWith(actual, '/estadoPedido') ? 'activo' : ''}">
+                    <svg viewBox="0 0 24 24"><path d="M9 5h11M9 12h11M9 19h11M4 5h.01M4 12h.01M4 19h.01"/></svg>Pedidos</a>
+                <a href="${ctx}/stock" class="${fn:startsWith(actual, '/stock') ? 'activo' : ''}">
+                    <svg viewBox="0 0 24 24"><path d="M21 8 12 3 3 8v8l9 5 9-5zM3 8l9 5 9-5M12 13v8"/></svg>Stock de insumos</a>
+                <a href="${ctx}/catalogo" class="${fn:startsWith(actual, '/catalogo') ? 'activo' : ''}">
+                    <svg viewBox="0 0 24 24"><path d="M4 4h7v7H4zM13 4h7v7h-7zM4 13h7v7H4zM13 13h7v7h-7z"/></svg>Catálogo de productos</a>
+            </c:if>
+
+            <c:if test="${rol == 'ENCARGADO_ALMACEN'}">
+                <div class="grupo">Almacén</div>
+                <a href="${ctx}/insumo" class="${fn:startsWith(actual, '/insumo') and not fn:contains(actual, 'salidas') ? 'activo' : ''}">
+                    <svg viewBox="0 0 24 24"><path d="M12 3v12M7 10l5 5 5-5M4 21h16"/></svg>Ingreso de insumos</a>
+                <a href="${ctx}/insumo?accion=salidas" class="${fn:contains(actual, 'salidas') ? 'activo' : ''}">
+                    <svg viewBox="0 0 24 24"><path d="M12 21V9M7 14l5-5 5 5M4 3h16"/></svg>Salidas por producción</a>
+                <a href="${ctx}/stock" class="${fn:startsWith(actual, '/stock') ? 'activo' : ''}">
+                    <svg viewBox="0 0 24 24"><path d="M21 8 12 3 3 8v8l9 5 9-5zM3 8l9 5 9-5M12 13v8"/></svg>Stock y lotes</a>
+                <a href="${ctx}/solicitud" class="${fn:startsWith(actual, '/solicitud') ? 'activo' : ''}">
+                    <svg viewBox="0 0 24 24"><path d="M6 2h9l5 5v15H6zM14 2v6h6M9 13h8M9 17h5"/></svg>Solicitudes de compra</a>
+            </c:if>
+
+            <c:if test="${rol == 'ADMINISTRADOR'}">
+                <div class="grupo">Reportes</div>
+                <a href="${ctx}/reporte" class="${fn:startsWith(actual, '/reporte') and not fn:contains(actual, 'consumo') ? 'activo' : ''}">
+                    <svg viewBox="0 0 24 24"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg>Reporte de ventas</a>
+                <a href="${ctx}/reporte?tipo=consumo" class="${fn:contains(actual, 'consumo') ? 'activo' : ''}">
+                    <svg viewBox="0 0 24 24"><path d="M3 3v18h18M7 15l4-4 3 3 5-6"/></svg>Consumo de insumos</a>
+                <div class="grupo">Abastecimiento</div>
+                <a href="${ctx}/solicitud" class="${fn:startsWith(actual, '/solicitud') ? 'activo' : ''}">
+                    <svg viewBox="0 0 24 24"><path d="M6 2h9l5 5v15H6zM14 2v6h6M9 13h8M9 17h5"/></svg>Solicitudes de compra</a>
+                <a href="${ctx}/stock" class="${fn:startsWith(actual, '/stock') ? 'activo' : ''}">
+                    <svg viewBox="0 0 24 24"><path d="M21 8 12 3 3 8v8l9 5 9-5zM3 8l9 5 9-5M12 13v8"/></svg>Stock y lotes</a>
+                <div class="grupo">Administración</div>
+                <a href="${ctx}/admin?entidad=usuarios" class="${entidad == 'usuarios' ? 'activo' : ''}">
+                    <svg viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM22 21v-2a4 4 0 0 0-3-3.9M16 3.1a4 4 0 0 1 0 7.8"/></svg>Usuarios</a>
+                <a href="${ctx}/admin?entidad=productos" class="${entidad == 'productos' ? 'activo' : ''}">
+                    <svg viewBox="0 0 24 24"><path d="M4 4h7v7H4zM13 4h7v7h-7zM4 13h7v7H4zM13 13h7v7h-7z"/></svg>Productos y recetas</a>
+                <a href="${ctx}/admin?entidad=insumos" class="${entidad == 'insumos' ? 'activo' : ''}">
+                    <svg viewBox="0 0 24 24"><path d="M21 8 12 3 3 8v8l9 5 9-5zM3 8l9 5 9-5M12 13v8"/></svg>Insumos</a>
+                <a href="${ctx}/admin?entidad=tiendas" class="${entidad == 'tiendas' ? 'activo' : ''}">
+                    <svg viewBox="0 0 24 24"><path d="M3 9l1.5-5h15L21 9M3 9h18v3a3 3 0 0 1-6 0 3 3 0 0 1-6 0 3 3 0 0 1-6 0zM5 14v7h14v-7"/></svg>Tiendas</a>
+                <a href="${ctx}/admin?entidad=proveedores" class="${entidad == 'proveedores' ? 'activo' : ''}">
+                    <svg viewBox="0 0 24 24"><path d="M1 3h15v13H1zM16 8h4l3 3v5h-7M5.5 21a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5zM18.5 21a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5z"/></svg>Proveedores</a>
+                <a href="${ctx}/admin?entidad=clientes" class="${entidad == 'clientes' ? 'activo' : ''}">
+                    <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2M12 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8z"/></svg>Clientes</a>
+                <a href="${ctx}/admin?entidad=auditoria" class="${entidad == 'auditoria' ? 'activo' : ''}">
+                    <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>Auditoría</a>
+            </c:if>
+
+            <div class="grupo">Cuenta</div>
+            <a href="${ctx}/cuenta" class="${fn:startsWith(actual, '/cuenta') ? 'activo' : ''}">
+                <svg viewBox="0 0 24 24"><path d="M5 11h14v10H5zM8 11V7a4 4 0 0 1 8 0v4"/></svg>Cambiar contraseña</a>
+            <a href="${ctx}/logout" data-confirmar="¿Desea cerrar sesión?">
+                <svg viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9"/></svg>Cerrar sesión</a>
+        </nav>
+        <div class="pie-menu">SIGEPPI v1.1 · Grupo 02 · USIL</div>
+    </aside>
+
+    <div class="principal">
+        <header class="barra-sup">
+            <button type="button" class="btn chico btn-menu" id="btnMenu" aria-label="Abrir menú">☰</button>
+            <span class="fecha" id="fechaHoy"></span>
+            <span class="espacio"></span>
+            <div class="usuario">
+                <div>
+                    <b><c:out value="${u.nombreCompleto}" /></b>
+                    <small>
+                        <c:choose>
+                            <c:when test="${rol == 'VENDEDOR'}">Vendedor</c:when>
+                            <c:when test="${rol == 'JEFE_PRODUCCION'}">Jefe de Producción</c:when>
+                            <c:when test="${rol == 'ENCARGADO_ALMACEN'}">Encargado de Almacén</c:when>
+                            <c:otherwise>Administrador</c:otherwise>
+                        </c:choose>
+                        <c:if test="${not empty u.tienda}"> · <c:out value="${u.tienda.nombre}" /></c:if>
+                    </small>
+                </div>
+                <span class="avatar"><c:out value="${fn:substring(u.nombres, 0, 1)}${fn:substring(u.apellidos, 0, 1)}" /></span>
+            </div>
+        </header>
+        <main class="contenido">
+<c:if test="${not empty error}"><div class="alerta error" role="alert"><c:out value="${error}" /></div></c:if>
+<c:if test="${not empty mensaje}"><div class="alerta ok" role="status"><c:out value="${mensaje}" /></div></c:if>
+<c:if test="${not empty param.msg}"><div class="alerta info" role="status"><c:out value="${param.msg}" /></div></c:if>

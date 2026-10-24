@@ -1,0 +1,7 @@
+        </main>
+        <footer class="pie">SIGEPPI · Sistema de Gestión de Pedidos, Producción e Inventario · Grupo 02 · Ingeniería de Software 2 · USIL 2026-02</footer>
+    </div>
+</div>
+<script src="${ctx}/recursos/js/app.js"></script>
+</body>
+</html>

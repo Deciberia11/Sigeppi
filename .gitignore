@@ -1,0 +1,40 @@
+# ============================================================
+# SIGEPPI - archivos que NO se suben a GitHub
+# ============================================================
+
+# --- Credenciales y secretos (NUNCA subir) ---
+# La clave de la base de datos va aqui; en el repo solo va db.properties.example
+src/main/resources/db.properties
+db.properties
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+
+# --- Compilados de Maven ---
+target/
+
+# --- NetBeans ---
+nbproject/private/
+nbactions*.xml
+build/
+dist/
+
+# --- Otros IDEs ---
+.idea/
+*.iml
+.vscode/
+.settings/
+.project
+.classpath
+
+# --- Sistema operativo ---
+Thumbs.db
+desktop.ini
+.DS_Store
+
+# --- Logs y temporales ---
+*.log
+*.tmp
+*~

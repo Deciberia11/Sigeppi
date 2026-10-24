@@ -1,0 +1,16 @@
+# Lo que Docker NO copia al construir la imagen
+.git/
+.gitignore
+target/
+nbproject/private/
+.idea/
+.vscode/
+*.log
+
+# Credenciales: la imagen recibe la clave por variables de entorno, no por archivo
+src/main/resources/db.properties
+.env
+.env.*
+
+# Documentacion
+*.md

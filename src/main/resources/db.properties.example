@@ -1,0 +1,9 @@
+# ============================================================
+# PLANTILLA de conexion a PostgreSQL (RNF-18)
+# 1. Copia este archivo como db.properties en esta misma carpeta.
+# 2. Pon tus datos reales en db.properties (ese archivo NO se sube a GitHub).
+# Si defines variables de entorno con el mismo nombre, esas tienen prioridad.
+# ============================================================
+SIGEPPI_DB_URL=jdbc:postgresql://localhost:5432/sigeppi_db
+SIGEPPI_DB_USER=tu_usuario
+SIGEPPI_DB_PASS=tu_contrasena
